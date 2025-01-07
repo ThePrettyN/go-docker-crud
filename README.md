@@ -30,46 +30,46 @@
 
 ## 以下のソフトウェアがシステムにインストールされていることを確認してください:
 
-- Docker >= 24.0.0
-- Docker Compose >= 2.0.0
+- Docker >= `24.0.0`
+- Docker Compose >= `2.0.0`
 
 
 # 開始手順
 
 ## リポジトリのクローン
 
-- $ git clone https://github.com/ThePrettyN/go-docker-crud.git
-- $ cd go-docker-crud
+- `$ git clone https://github.com/ThePrettyN/go-docker-crud.git`
+- `$ cd go-docker-crud`
 
 ## アプリケーションのビルドと実行
 
 1. Docker Compose を使用してアプリケーションをビルドおよび起動:
 
-- $ docker-compose up --build
+- `$ docker-compose up --build`
 
 2. アプリケーションは http://localhost:8080 でアクセス可能。
 
 3. PostgreSQL データベースが以下の認証情報で起動していることを確認:
 
-- Username: postgres
-- Password: password
+- Username: `postgres`
+- Password: `password`
 
 ## API エンドポイント
 
 - Base URL: http://localhost:8080
-
-メソッド             エンドポイント               説明
-GET                 /resources                  全リソースの取得
-GET                 /resources/:id              ID に基づくリソースの取得
-POST                /resources                  新規リソースの作成
-PUT                 /resources/:id              既存リソースの更新
-DELETE              /resources/:id              リソースの削除
-
+  ```
+  メソッド             エンドポイント               説明
+  GET                 /resources                  全リソースの取得
+  GET                 /resources/:id              ID に基づくリソースの取得
+  POST                /resources                  新規リソースの作成
+  PUT                 /resources/:id              既存リソースの更新
+  DELETE              /resources/:id              リソースの削除
+  ```
 ## アプリケーションの停止
 
 アプリケーションを停止するには以下を実行:
 
-- $ docker-compose down
+- `$ docker-compose down`
 
 
 # プロジェクト構成
@@ -127,13 +127,13 @@ DELETE              /resources/:id              リソースの削除
 
 ## Kubernetes を使ったスケーリング
 
-1. Kubernetes ディレクトリを作成し、以下を定義:
+1. **Kubernetes ディレクトリを作成し、以下を定義:**
 
 - Deployments
 - Services
 - ConfigMaps/Secrets
 
-2. 以下のコマンドでアプリケーションをデプロイ:
+2. **以下のコマンドでアプリケーションをデプロイ:**
 
 - $ kubectl apply -f <manifest-file>
 
@@ -147,95 +147,95 @@ DELETE              /resources/:id              リソースの削除
 
 以下は API エンドポイントをテストするための具体例です。curl コマンドを使用してアプリケーションの動作を検証できます。
 
-1. ユーザーの作成 (エンドポイント: POST /users)
+1. **ユーザーの作成 (エンドポイント: POST /users)**
 
 - 説明: 新しいユーザーをデータベースに作成します。
-
-curl -X POST http://localhost:8080/users \
-  -H "Content-Type: application/json" \
-  -d '{
+  ```
+  curl -X POST http://localhost:8080/users \
+    -H "Content-Type: application/json" \
+    -d '{
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "age": 30
+    }'
+  ```
+- 期待されるレスポンス (HTTP 201 Created):
+  ```
+  {
     "id": 1,
     "name": "John Doe",
     "email": "john.doe@example.com",
     "age": 30
-  }'
-
-- 期待されるレスポンス (HTTP 201 Created):
-
-{
-  "id": 1,
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "age": 30
-}
-
-2. 全ユーザーの取得 (エンドポイント: GET /users)
+  }
+  ```
+2. **全ユーザーの取得 (エンドポイント: GET /users)**
 
 - 説明: データベース内の全ユーザー情報を取得します。
-
-curl http://localhost:8080/users
-
+  ```
+  curl http://localhost:8080/users
+  ```
 - 期待されるレスポンス (HTTP 200 OK):
+  ```
+  [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "age": 30
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "age": 25
+    }
+  ]
+  ```
+3. **特定のユーザーの取得 (エンドポイント: GET /users/{id})**
 
-[
+- 説明: 指定した ID のユーザー情報を取得します。
+  ```
+  curl http://localhost:8080/users/1
+  ```
+- 期待されるレスポンス (HTTP 200 OK):
+  ```
   {
     "id": 1,
     "name": "John Doe",
     "email": "john.doe@example.com",
     "age": 30
-  },
-  {
-    "id": 2,
-    "name": "Jane Smith",
-    "email": "jane.smith@example.com",
-    "age": 25
   }
-]
-
-3. 特定のユーザーの取得 (エンドポイント: GET /users/{id})
-
-- 説明: 指定した ID のユーザー情報を取得します。
-
-curl http://localhost:8080/users/1
-
-- 期待されるレスポンス (HTTP 200 OK):
-
-{
-  "id": 1,
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "age": 30
-}
-
+  ```
 - ユーザーが存在しない場合のレスポンス (HTTP 404 Not Found):
-
-User not found (404 Not Found status code).
-
-4. ユーザー情報の更新 (エンドポイント: PUT /users/{id})
+  ```
+  User not found (404 Not Found status code).
+  ```
+4. **ユーザー情報の更新 (エンドポイント: PUT /users/{id})**
 
 - 説明: 指定した ID のユーザー情報 (名前、メールアドレス、年齢) を更新します。
-
-curl -X PUT http://localhost:8080/users/1 \
-  -H "Content-Type: application/json" \
-  -d '{
+  ```
+  curl -X PUT http://localhost:8080/users/1 \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "John Updated",
+      "email": "john.updated@example.com",
+      "age": 31
+    }'
+  ```
+- 期待されるレスポンス (HTTP 200 OK):
+  ```
+  {
+    "id": 1,
     "name": "John Updated",
     "email": "john.updated@example.com",
     "age": 31
-  }'
-
-- 期待されるレスポンス (HTTP 200 OK):
-
-{
-  "id": 1,
-  "name": "John Updated",
-  "email": "john.updated@example.com",
-  "age": 31
-}
-
-5. ユーザーの削除 (エンドポイント: DELETE /users/{id})
+  }
+  ```
+5. **ユーザーの削除 (エンドポイント: DELETE /users/{id})**
 
 - 説明: 指定した ID のユーザーをデータベースから削除します。
-
-curl -X DELETE http://localhost:8080/users/1
-
+  ```
+  curl -X DELETE http://localhost:8080/users/1
+  ```
 - 期待されるレスポンス: HTTP 204 No Content または類似の成功メッセージ。
