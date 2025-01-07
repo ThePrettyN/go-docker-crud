@@ -73,7 +73,7 @@ DELETE              /resources/:id              リソースの削除
 
 
 # プロジェクト構成
-
+```
 📁 go-docker-crud
 ├── 📂 cmd
 │   └── main.go              # アプリケーションエントリポイント
@@ -86,7 +86,7 @@ DELETE              /resources/:id              リソースの削除
 ├── go.mod                   # Go モジュール依存関係
 ├── go.sum                   # 依存関係チェックサム
 └── README.md                # プロジェクトドキュメント
-
+```
 
 # アーキテクチャの説明
 
